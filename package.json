@@ -1,0 +1,38 @@
+{
+  "name": "eternal-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -Rf ./build && babel ./*.js -d ./build && cp config.json build/",
+    "buildAll": "rm -Rf ./tmp && babel ./*.js -d ./tmp -s && cp config.json ./tmp && babel ./test -d ./tmp/test -s",
+    "debug": "supervisor --  -r babel-register ./index.js | ./node_modules/.bin/bunyan",
+    "start": "node ./",
+    "coverage": "npm run buildAll && rm -Rf ./coverage && istanbul cover _mocha ./tmp/test -- --recursive ./tmp/test && remap-istanbul -i ./coverage/coverage.json -o ./coverage/lcov-report -t html&& remap-istanbul -i ./coverage/coverage.json -o ./coverage/coverage.json  && istanbul check-coverage ./coverage/coverage.json --statements=30 --functions=20 --branches=0 --lines=30",
+    "lint": "jshint ./*.js && jscs ./*.js",
+    "unittest": "mocha ./test/*.js --require ./test/helpers/configure.js --compilers js:babel-register",
+    "test": "npm run lint && npm run unittest"
+  },
+  "author": "Shiv Arora <shiv@justhype.co.uk>",
+  "license": "ISC",
+  "dependencies": {
+    "babel-register": "^6.18.0",
+    "body-parser": "^1.15.1",
+    "bunyan": "^1.7.0",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.5",
+    "path": "^0.12.7",
+    "pg": "4.4.6",
+    "quickthumb": "0.0.12"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-preset-es2015": "^6.5.0",
+    "dotenv": "^2.0.0",
+    "jscs": "^2.9.0",
+    "jshint": "^2.9.1",
+    "remap-istanbul": "^0.8.4",
+    "rewire": "^2.5.2",
+    "supervisor": "^0.9.1"
+  }
+}
